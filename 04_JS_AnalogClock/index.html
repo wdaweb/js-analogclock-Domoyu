@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>clock</title>
+
+    <style>
+      body {
+        margin: 0;
+        background: #777;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        height: 100vh;
+        align-content: center;
+      }
+      .min {        
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;    
+      }    
+
+      .clock {       
+        width: 600px;
+        height:600px;        
+        background:url("clock.png") no-repeat;      
+        position: relative;
+      }    
+
+      
+      .clock_min {
+        /*分針*/
+        width: 16px;
+        height: 300px;
+        background: url(MEX.png) no-repeat;
+        position: absolute;
+        animation: j_m 3600s infinite linear;
+      }
+      .clock_hour {
+        /*時針*/
+        width: 16px;
+        height: 300px;
+        background: url(HEX.png) no-repeat;
+        position: absolute;
+        animation: j_h 43200s infinite linear;
+      }
+      .clock_sec {
+        /*秒針*/
+        width: 16px;
+        height: 300px;
+        background: url(SEX.png) no-repeat;
+        position: absolute;
+        animation: j_s 60s infinite linear;
+      }
+     
+    </style>
+
+
+
+    <script>
+      var time = new Date();
+      var pos_s = time.getSeconds();
+      var pos_m = time.getMinutes();
+      var pos_h = time.getHours();
+      var x = pos_s * 6; //當前秒數*6 = 當前秒數角度 ex:15秒=90度 15*6=90
+      var y = pos_m * 6 + pos_s * 0.1; //對Y來說還有一個角度是60秒滿足6度 1分鐘=6度 1秒=0.1度
+      var z = pos_h * 30 + pos_m * 0.5; //對Z來說還有一個角度是60分鐘滿足30度 1小時=30度 30度/60=0.5
+
+      document.write(`
+        <style>
+        @keyframes j_s {
+            from{
+                transform:rotate(${x}deg);
+            }
+            to{
+                transform:rotate(${360 + x}deg);
+            }        
+        }
+        @keyframes j_m {
+            from{
+                transform:rotate(${y}0deg);
+            }
+            to{
+                transform:rotate(${360 + y}deg);
+            }        
+        }
+        @keyframes j_h {
+            from{
+                transform:rotate(${z}deg);
+            }
+            to{
+                transform:rotate(${360 + z}deg);
+            }        
+        }
+        </style>
+        `);
+    </script>
+  </head>
+  <body>
+   
+
+    
+  <div class="min">
+    <div class="clock"></div>
+      <div class="clock_hour"></div>
+      <div class="clock_min"></div>      
+      <div class="clock_sec"></div>    
+  </div>
+    
+
+   
+
+
+    <script>
+        function overtime(){
+            var time = new Date();
+            var pos_s = time.getSeconds();
+            var pos_m = time.getMinutes();
+            var pos_h = time.getHours();
+            var x = pos_s * 6; 
+            var y = pos_m * 6 + pos_s * 0.1;
+            var z = pos_h * 30 + pos_m * 0.5;
+            document.getElementsByClassName('osec4')[0].style.transform=`rotate(${x}deg)`;
+            document.getElementsByClassName('omin4')[0].style.transform=`rotate(${y}deg)`;
+            document.getElementsByClassName('ohour4')[0].style.transform=`rotate(${z}deg)`;
+        }
+        
+        document.getElementsByClassName('osec4')[0].style.transform=`rptate(${x}deg)`;
+        document.getElementsByClassName('omin4')[0].style.transform=`rptate(${y}deg)`;
+        document.getElementsByClassName('ohour4')[0].style.transform=`rptate(${z}deg)`;
+        
+
+        
+        var loop = setInterval(overtime,1000);
+
+        function ctl(who){
+            if(who.textContent =="STOP"){
+                clearInterval(loop);
+                who.textContent="PLAY";
+            }
+            else{
+                loop = setInterval(overtime,1000);
+                who.textContent="STOP";
+            }
+        }
+    </script>
+
+  </body>
+</html>
